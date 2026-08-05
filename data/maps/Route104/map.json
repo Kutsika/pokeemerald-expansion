@@ -3,7 +3,6 @@
   "name": "Route104",
   "layout": "LAYOUT_ROUTE104",
   "music": "MUS_ROUTE104",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_ROUTE_104",
   "requires_flash": false,
   "weather": "WEATHER_SUNNY",
@@ -152,45 +151,6 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_BERRY_TREE",
-      "x": 34,
-      "y": 6,
-      "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_BERRY_TREE_GROWTH",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "BERRY_TREE_ROUTE_104_CHERI_1",
-      "script": "BerryTreeScript",
-      "flag": "0"
-    },
-    {
-      "graphics_id": "OBJ_EVENT_GFX_BERRY_TREE",
-      "x": 35,
-      "y": 6,
-      "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_BERRY_TREE_GROWTH",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "BERRY_TREE_ROUTE_104_SOIL_2",
-      "script": "BerryTreeScript",
-      "flag": "0"
-    },
-    {
-      "graphics_id": "OBJ_EVENT_GFX_BERRY_TREE",
-      "x": 36,
-      "y": 6,
-      "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_BERRY_TREE_GROWTH",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "BERRY_TREE_ROUTE_104_LEPPA",
-      "script": "BerryTreeScript",
-      "flag": "0"
-    },
-    {
-      "graphics_id": "OBJ_EVENT_GFX_BERRY_TREE",
       "x": 22,
       "y": 41,
       "elevation": 3,
@@ -239,58 +199,6 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route104_EventScript_ExpertF",
-      "flag": "0"
-    },
-    {
-      "graphics_id": "OBJ_EVENT_GFX_BERRY_TREE",
-      "x": 3,
-      "y": 22,
-      "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_BERRY_TREE_GROWTH",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "BERRY_TREE_ROUTE_104_SOIL_1",
-      "script": "BerryTreeScript",
-      "flag": "0"
-    },
-    {
-      "graphics_id": "OBJ_EVENT_GFX_BERRY_TREE",
-      "x": 3,
-      "y": 23,
-      "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_BERRY_TREE_GROWTH",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "BERRY_TREE_ROUTE_104_ORAN_1",
-      "script": "BerryTreeScript",
-      "flag": "0"
-    },
-    {
-      "graphics_id": "OBJ_EVENT_GFX_BERRY_TREE",
-      "x": 3,
-      "y": 24,
-      "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_BERRY_TREE_GROWTH",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "BERRY_TREE_ROUTE_104_SOIL_4",
-      "script": "BerryTreeScript",
-      "flag": "0"
-    },
-    {
-      "graphics_id": "OBJ_EVENT_GFX_BERRY_TREE",
-      "x": 3,
-      "y": 25,
-      "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_BERRY_TREE_GROWTH",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "BERRY_TREE_ROUTE_104_CHERI_2",
-      "script": "BerryTreeScript",
       "flag": "0"
     },
     {
@@ -589,22 +497,6 @@
     },
     {
       "type": "hidden_item",
-      "x": 7,
-      "y": 6,
-      "elevation": 3,
-      "item": "ITEM_SUPER_POTION",
-      "flag": "FLAG_HIDDEN_ITEM_ROUTE_104_SUPER_POTION"
-    },
-    {
-      "type": "hidden_item",
-      "x": 3,
-      "y": 9,
-      "elevation": 3,
-      "item": "ITEM_POKE_BALL",
-      "flag": "FLAG_HIDDEN_ITEM_ROUTE_104_POKE_BALL"
-    },
-    {
-      "type": "hidden_item",
       "x": 14,
       "y": 55,
       "elevation": 3,
@@ -627,5 +519,6 @@
       "item": "ITEM_HEART_SCALE",
       "flag": "FLAG_HIDDEN_ITEM_ROUTE_104_HEART_SCALE"
     }
-  ]
+  ],
+  "region": "REGION_HOENN"
 }
