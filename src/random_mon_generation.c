@@ -34,7 +34,7 @@ struct RandomSpeciesGeneratorOptions
     u32 banUltraBeast:1;
     u32 banParadox:1;
     u32 randomizeForms:1;
-    enum RandomSpeciesDexMode dexMode:0;
+    enum RandomSpeciesDexMode dexMode:1;
     u32 padding:3;
 };
 
