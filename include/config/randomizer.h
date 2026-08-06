@@ -4,7 +4,7 @@
 // Global control. If FALSE, no randomizer functionality will be enabled.
 // If this is TRUE, that doesn't necessarily mean that a particular part of the randomizer
 // will be enabled.
-#define RANDOMIZER_AVAILABLE                   FALSE
+#define RANDOMIZER_AVAILABLE                   TRUE
 
 #if RANDOMIZER_AVAILABLE == TRUE
 
