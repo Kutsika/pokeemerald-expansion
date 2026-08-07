@@ -13,7 +13,7 @@ const enum TrainerClassID RandomizerTrainerClassExclusions[] = {
 };
 
 const u8 RandomizerTrainerNamesExclusions[][TRAINER_NAME_LENGTH + 1] = {
-    _("TRAINER_JACKSON"),
     // The following are provided as an example
+    _("JACKSON")
     // _("JOSH"),
 };

@@ -16879,13 +16879,74 @@ Level: 5
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_JACKSON ===
-Name: LEAF
+Name: JACKSON
 Class: Rival
 Pic: Leaf
-Gender: Female
+Gender: Male
 Music: Male
-Double Battle: No
+Double Battle: Yes
 
-Bulbasaur
-Level: 5
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Metagross @ Assault Vest
+Level: 53 
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+EVs: 252 HP / 252 Atk / 4 SpD
+Nature: Brave
+- Heavy Slam
+- Psychic Fangs
+- Stomping Tantrum
+- Body Press
+
+Indeedee-F @ Safety Goggles
+Level: 53   
+Ability: Psychic Surge
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 HP / 252 Def / 4 SpD
+Nature: Bold
+- Trick Room
+- Follow Me
+- Helping Hand
+- Psychic
+
+Gallade @ Clear Amulet
+Level: 54
+Ability: Sharpness
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: 252 Atk / 4 SpD / 252 Spe
+Nature: Jolly
+- Sacred Sword
+- Psycho Cut
+- Protect
+- Wide Guard
+
+Hatterene @ Life Orb
+Level: 54
+Ability: Magic Bounce
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+EVs: 252 HP / 4 Def / 252 SpA
+Nature: Quiet
+- Expanding Force
+- Mystical Fire
+- Dazzling Gleam
+- Protect
+
+Farigiraf @ Leftovers
+Level: 55
+Ability: Armor Tail
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+EVs: 252 HP / 4 SpA / 252 SpD
+Nature: Sassy
+- Trick Room
+- Ally Switch
+- Hyper Voice
+- Helping Hand
+
+Reuniclus @ Sitrus Berry
+Ability: Magic Guard
+Level: 55
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 0 Spe
+EVs: 52 HP / 92 Def / 168 SpA / 196 SpD
+Nature: Quiet
+- Expanding Force
+- Protect
+- Encore
+- Shadow Ball
