@@ -695,7 +695,7 @@
       "elevation": 3,
       "var": "VAR_TEMP_3",
       "var_value": "0",
-      "script": "Route111_EventScript_ViciousSandstormTriggerDown"
+      "script": "Route111_EventScript_SandstormTrigger"
     },
     {
       "type": "trigger",
@@ -704,7 +704,7 @@
       "elevation": 3,
       "var": "VAR_TEMP_3",
       "var_value": "0",
-      "script": "Route111_EventScript_ViciousSandstormTriggerDown"
+      "script": "Route111_EventScript_SandstormTrigger"
     },
     {
       "type": "trigger",
@@ -713,7 +713,7 @@
       "elevation": 3,
       "var": "VAR_TEMP_3",
       "var_value": "0",
-      "script": "Route111_EventScript_ViciousSandstormTriggerDown"
+      "script": "Route111_EventScript_SandstormTrigger"
     },
     {
       "type": "trigger",
@@ -731,7 +731,7 @@
       "elevation": 3,
       "var": "VAR_TEMP_3",
       "var_value": "0",
-      "script": "Route111_EventScript_ViciousSandstormTriggerLeft"
+      "script": "Route111_EventScript_SandstormTrigger"
     },
     {
       "type": "trigger",
@@ -740,7 +740,7 @@
       "elevation": 3,
       "var": "VAR_TEMP_3",
       "var_value": "0",
-      "script": "Route111_EventScript_ViciousSandstormTriggerLeft"
+      "script": "Route111_EventScript_SandstormTrigger"
     },
     {
       "type": "trigger",
@@ -749,7 +749,7 @@
       "elevation": 3,
       "var": "VAR_TEMP_3",
       "var_value": "0",
-      "script": "Route111_EventScript_ViciousSandstormTriggerLeft"
+      "script": "Route111_EventScript_SandstormTrigger"
     },
     {
       "type": "trigger",
@@ -758,7 +758,7 @@
       "elevation": 3,
       "var": "VAR_TEMP_3",
       "var_value": "0",
-      "script": "Route111_EventScript_ViciousSandstormTriggerLeft"
+      "script": "Route111_EventScript_SandstormTrigger"
     },
     {
       "type": "trigger",
@@ -767,7 +767,7 @@
       "elevation": 3,
       "var": "VAR_TEMP_3",
       "var_value": "0",
-      "script": "Route111_EventScript_ViciousSandstormTriggerDown"
+      "script": "Route111_EventScript_SandstormTrigger"
     },
     {
       "type": "trigger",
@@ -812,7 +812,7 @@
       "elevation": 3,
       "var": "VAR_TEMP_3",
       "var_value": "0",
-      "script": "Route111_EventScript_ViciousSandstormTriggerLeft"
+      "script": "Route111_EventScript_SandstormTrigger"
     },
     {
       "type": "trigger",
@@ -821,7 +821,7 @@
       "elevation": 3,
       "var": "VAR_TEMP_3",
       "var_value": "0",
-      "script": "Route111_EventScript_ViciousSandstormTriggerLeft"
+      "script": "Route111_EventScript_SandstormTrigger"
     },
     {
       "type": "trigger",
