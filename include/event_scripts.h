@@ -788,5 +788,6 @@ extern const u8 EventScript_Indigo_UltimateGoal[];
 extern const u8 EventScript_Indigo_HighestAuthority[];
 
 extern u8 EventScript_PokeVialHeal[];
+extern u8 EventScript_CandyJarUse[];
 
 #endif // GUARD_EVENT_SCRIPTS_H

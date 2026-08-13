@@ -7255,6 +7255,22 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_PokeVial,
     },
 
+    [ITEM_CANDY_JAR] =
+    {
+        .name = ITEM_NAME("Candy Jar"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "Raises\n"
+            "a pokemon's lvl\n"
+            "to the cap."),
+        .pocket = POCKET_KEY_ITEMS,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_CandyJar,
+        .effect = gItemEffect_RareCandy,
+        .iconPic = gItemIcon_CandyJar,
+        .iconPalette = gItemIconPalette_CandyJar,
+    },
+
 // Gems
     #if I_PRICE >= GEN_9
         #define GEM_PRICE 15000

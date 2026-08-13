@@ -1054,6 +1054,7 @@ enum __attribute__((packed)) Item
 
     //Custom Items
     ITEM_POKE_VIAL = 874,
+    ITEM_CANDY_JAR = 875,
 
     ITEMS_COUNT,
     ITEM_FIELD_ARROW = ITEMS_COUNT,
