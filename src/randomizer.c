@@ -49,6 +49,7 @@ void FindHiddenItemRandomize_NativeCall(struct ScriptContext *ctx){}
 #include "script.h"
 #include "data.h"
 #include "string_util.h"
+#include "move.h"
 #include "constants/moves.h"
 #include "constants/abilities.h"
 #include "data/randomizer/special_form_tables.h"
@@ -277,6 +278,15 @@ struct SpeciesTable
     u16 groupIndexToSpecies[RANDOMIZER_SPECIES_COUNT];
 };
 
+struct MoveTable
+{
+    // Stores the group records for each move.
+    u16 groupData[RANDOMIZER_MOVE_COUNT];
+    u16 moveToGroupIndex[RANDOMIZER_MOVE_COUNT];
+    // Maps a group data index to a move.
+    u16 groupIndexToMove[RANDOMIZER_MOVE_COUNT];
+};
+
 #define GROUP_INVALID   0xFFFF
 
 static inline u16 GetSpeciesGroup(const struct SpeciesTable* table, u16 species)
@@ -368,7 +378,16 @@ struct RamSpeciesTable
     struct SpeciesTable speciesTable;
 };
 
+struct RamMoveTable
+{
+    enum RandomizerMoveMode mode;
+    bool16 tableInitialized;
+    struct MoveTable moveTable;
+};
+
 EWRAM_DATA static struct RamSpeciesTable sRamSpeciesTable = {0};
+
+EWRAM_DATA static struct RamMoveTable sRamMoveTable = {0};
 
 static void FillSpeciesGroupsRandom(struct SpeciesTable* entries)
 {
@@ -409,6 +428,24 @@ static void FillSpeciesGroupsBST(struct SpeciesTable* entries)
             group = GROUP_INVALID;
 
         entries->groupData[i] = group;
+    }
+}
+
+static void FillMoveGroupsPower(struct MoveTable* entries)
+{
+    u16 i;
+
+    for (i = 0; i < RANDOMIZER_MOVE_COUNT; i++)
+    {
+        entries->groupIndexToMove[i] = i;
+
+        if (i == MOVE_NONE || i >= MOVES_COUNT_ALL)
+        {
+            entries->groupData[i] = GROUP_INVALID;
+            continue;
+        }
+
+        entries->groupData[i] = GetMovePower(i);
     }
 }
 
@@ -512,7 +549,7 @@ static inline u16 LeftChildIndex(u16 index)
     return 2*index + 1;
 }
 
-static inline void SwapSpeciesAndGroup(struct SpeciesTable* table, u16 indexA, u16 indexB)
+static inline void SwapGenericAndGroup(struct SpeciesTable* table, u16 indexA, u16 indexB)
 {
     u16 temp;
     SWAP(table->groupData[indexA], table->groupData[indexB], temp);
@@ -556,7 +593,7 @@ static void BuildRandomizerSpeciesTable(enum RandomizerSpeciesMode mode)
         else
         {
             end = end - 1;
-            SwapSpeciesAndGroup(speciesTable, end, 0);
+            SwapGenericAndGroup(speciesTable, end, 0);
         }
         root = start;
         while(LeftChildIndex(root) < end)
@@ -572,7 +609,7 @@ static void BuildRandomizerSpeciesTable(enum RandomizerSpeciesMode mode)
 
             if (speciesTable->groupData[root] < speciesTable->groupData[child])
             {
-                SwapSpeciesAndGroup(speciesTable, root, child);
+                SwapGenericAndGroup(speciesTable, root, child);
                 root = child;
             }
             else
@@ -597,9 +634,168 @@ static const struct SpeciesTable* GetSpeciesTable(enum RandomizerSpeciesMode mod
     return &sRamSpeciesTable.speciesTable;
 }
 
+static const struct MoveTable* GetMoveTable(enum RandomizerMoveMode mode);
+
+static inline u16 GetMoveGroup(const struct MoveTable* table, u16 move)
+{
+    u16 groupIndex = table->moveToGroupIndex[move];
+    return table->groupData[groupIndex];
+}
+
+static void GetMoveGroupRange(u16 group, enum RandomizerMoveMode mode, u16 *resultMin, u16 *resultMax)
+{
+    if (group == GROUP_INVALID)
+    {
+        *resultMax = *resultMin = group;
+        return;
+    }
+
+    if (mode == MOVE_RANDOM_BST)
+    {
+        s32 base, minScaled, maxScaled;
+        base = group * 1024;
+        minScaled = (base - group * 100) / 1024;
+        maxScaled = (base + group * 100) / 1024;
+        *resultMin = (u16)max(minScaled, 0);
+        *resultMax = (u16)min(maxScaled, GROUP_INVALID - 1);
+    }
+    else
+    {
+        *resultMax = *resultMin = group;
+    }
+}
+
+static void GetMoveIndicesFromGroupRange(const struct MoveTable *table, u16 minGroup, u16 maxGroup, u16 *start, u16 *end)
+{
+    u16 index, leftBound, rightBound, maxRightBound;
+    maxRightBound = RANDOMIZER_MOVE_COUNT - 1;
+    maxGroup = min(0xFFFEu, maxGroup);
+    minGroup = min(0xFFFEu, minGroup);
+    leftBound = 0;
+    rightBound = RANDOMIZER_MOVE_COUNT - 1;
+
+    while (leftBound < rightBound)
+    {
+        u16 leftFoundGroup;
+        index = (leftBound + rightBound) / 2;
+        leftFoundGroup = table->groupData[index];
+        if (leftFoundGroup < minGroup)
+            leftBound = index + 1;
+        else
+        {
+            if (leftFoundGroup > maxGroup)
+                maxRightBound = index;
+            rightBound = index;
+        }
+    }
+    *start = leftBound;
+
+    rightBound = maxRightBound;
+
+    while (leftBound < rightBound)
+    {
+        index = (leftBound + rightBound) / 2;
+        if (table->groupData[index] > maxGroup)
+            rightBound = index;
+        else
+            leftBound = index + 1;
+    }
+    *end = rightBound - 1;
+}
+
+static u16 RandomizeMoveTableLookup(struct Sfc32State* state, enum RandomizerMoveMode mode, u16 move)
+{
+    u16 minGroup, maxGroup, originalGroup, resultIndex;
+    u16 minIndex, maxIndex;
+    const struct MoveTable *table;
+
+    table = GetMoveTable(mode);
+    originalGroup = GetMoveGroup(table, move);
+
+    if (originalGroup == GROUP_INVALID)
+        return move;
+
+    GetMoveGroupRange(originalGroup, mode, &minGroup, &maxGroup);
+    GetMoveIndicesFromGroupRange(table, minGroup, maxGroup, &minIndex, &maxIndex);
+    resultIndex = RandomizerNextRange(state, maxIndex - minIndex + 1) + minIndex;
+    return table->groupIndexToMove[resultIndex];
+}
+
+static void BuildRandomizerMoveTable(enum RandomizerMoveMode mode)
+{
+    u16 i, start, end;
+    struct MoveTable* moveTable;
+
+    sRamMoveTable.tableInitialized = TRUE;
+    sRamMoveTable.mode = mode;
+    moveTable = &sRamMoveTable.moveTable;
+
+    switch(mode)
+    {
+        case MOVE_RANDOM:
+        case MOVE_RANDOM_BST:
+        default:
+            FillMoveGroupsPower(moveTable);
+            break;
+    }
+
+    // Heap sort the table.
+    start = RANDOMIZER_MOVE_COUNT/2;
+    end = RANDOMIZER_MOVE_COUNT-1;
+
+    while (end > 1)
+    {
+        u16 root;
+        if (start > 0)
+            start = start - 1;
+        else
+        {
+            end = end - 1;
+            SwapGenericAndGroup(moveTable, end, 0);
+        }
+        root = start;
+        while(LeftChildIndex(root) < end)
+        {
+            u16 child;
+            child = LeftChildIndex(root);
+
+            if (child+1 < end
+                && moveTable->groupData[child] < moveTable->groupData[child+1])
+            {
+                child = child + 1;
+            }
+
+            if (moveTable->groupData[root] < moveTable->groupData[child])
+            {
+                SwapGenericAndGroup(moveTable, root, child);
+                root = child;
+            }
+            else
+                break;
+        }
+    }
+
+
+    // Build the move index. This is needed for getting a group from a move.
+    for (i = 0; i < RANDOMIZER_MOVE_COUNT; i++)
+    {
+        u16 targetIndex = moveTable->groupIndexToMove[i];
+        moveTable->moveToGroupIndex[targetIndex] = i;
+    }
+}
+
+static const struct MoveTable* GetMoveTable(enum RandomizerMoveMode mode)
+{
+    if (!sRamMoveTable.tableInitialized || mode != sRamMoveTable.mode )
+        BuildRandomizerMoveTable(mode);
+
+    return &sRamMoveTable.moveTable;
+}
+
 void PreloadRandomizationTables(void)
 {
     GetSpeciesTable(RANDOMIZER_MON_MODE);
+    GetMoveTable(RANDOMIZER_MOVE_MODE);
 }
 
 static u16 RandomizeMonTableLookup(struct Sfc32State* state, enum RandomizerSpeciesMode mode, u16 species)
@@ -795,15 +991,19 @@ u16 RandomizeMove(u16 species, u16 move, u16 level) {
         return move;
     #endif
 
+    if (move == MOVE_NONE || move >= MOVES_COUNT_ALL)
+        return move;
+
     // We need to create a very stable seed that will always
-    // return the same thing for the same pokemon at the same level
-    const u8 minIndex = 1;
+    // return the same thing for the same pokemon at the same level.
     struct Sfc32State state = RandomizerRandSeed(RANDOMIZER_REASON_LEARNSET, species, ((u32) move << 16) | (u32) level);
-    u16 randomizedMove = (u16) RandomizerNextRange(&state, MOVES_COUNT - minIndex + 1) + minIndex;
+    u16 randomizedMove = RandomizeMoveTableLookup(&state, MOVE_RANDOM_BST, move);
+
     u8 i = 0;
-    while (!isMoveAllowed(randomizedMove)){
+    while (!isMoveAllowed(randomizedMove))
+    {
         state = RandomizerRandSeed(RANDOMIZER_REASON_LEARNSET, ((u32) ++i << 24) | (u32) species, ((u32) move << 16) | (u32) level);
-        randomizedMove = (u16) RandomizerNextRange(&state, MOVES_COUNT - minIndex + 1) + minIndex;
+        randomizedMove = RandomizeMoveTableLookup(&state, MOVE_RANDOM_BST, move);
     }
     return randomizedMove;
 }

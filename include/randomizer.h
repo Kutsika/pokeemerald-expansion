@@ -11,6 +11,9 @@
 #define RANDOMIZER_MAX_MON  (SPECIES_EGG-1)
 #define RANDOMIZER_SPECIES_COUNT (RANDOMIZER_MAX_MON+1)
 
+#define RANDOMIZER_MAX_MOVE (MOVES_COUNT_GEN9-1)
+#define RANDOMIZER_MOVE_COUNT (RANDOMIZER_MAX_MOVE+1)
+
 #define RANDOMIZER_STREAM 17
 
 enum RandomizerReason
@@ -36,6 +39,12 @@ enum RandomizerSpeciesMode {
 
     // A dummy mode to end the list.
     MAX_MON_MODE
+};
+
+enum RandomizerMoveMode {
+    // Any valid move can be randomized to any other valid move.
+    MOVE_RANDOM,
+    MOVE_RANDOM_BST
 };
 
 // This object can be passed to IsRandomizationPossible to speed up queries.

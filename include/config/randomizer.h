@@ -18,7 +18,9 @@
 
 #define RANDOMIZER_MAX_TM           ITEM_TM50
 
-#define RANDOMIZER_MON_MODE         MON_RANDOM
+#define RANDOMIZER_MON_MODE         MON_RANDOM_BST
+
+#define RANDOMIZER_MOVE_MODE        MOVE_RANDOM_BST
 
 // Vars and features
 
