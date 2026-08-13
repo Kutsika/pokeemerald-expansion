@@ -1641,4 +1641,29 @@ void ItemUseOutOfBattle_TownMap(u8 taskId)
     }
 }
 
+void ItemUseOnCB_PokeVial(u8 taskId)
+{
+    LockPlayerFieldControls();
+    ScriptContext_SetupScript(EventScript_PokeVialHeal);
+    DestroyTask(taskId);
+}
+
+void ItemUseOutOfBattle_PokeVial(u8 taskId)
+{
+    if (!gTasks[taskId].tUsingRegisteredKeyItem)
+    {
+        sItemUseOnFieldCB = ItemUseOnCB_PokeVial;
+        gFieldCallback = FieldCB_UseItemOnField;
+        gBagMenu->newScreenCallback = CB2_ReturnToField;
+        Task_FadeAndCloseBagMenu(taskId);
+    }
+    else
+    {
+        sItemUseOnFieldCB = ItemUseOnCB_PokeVial;
+        SetUpItemUseOnFieldCallback(taskId);
+    }
+}
+
+
+
 #undef tUsingRegisteredKeyItem

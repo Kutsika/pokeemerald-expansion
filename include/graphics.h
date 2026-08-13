@@ -3438,4 +3438,10 @@ extern const u16 gBattleIcons_Pal2[];
 extern const u32 gGhostFrontPic[];
 extern const u16 gGhostPalette[];
 
+extern const u32 gItemIcon_PokeVial[];
+extern const u16 gItemIconPalette_PokeVial[];
+
+extern const u32 gItemIcon_CandyJar[];
+extern const u16 gItemIconPalette_CandyJar[];
+
 #endif //GUARD_GRAPHICS_H

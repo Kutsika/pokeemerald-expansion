@@ -7240,6 +7240,20 @@ const struct ItemInfo gItemsInfo[] =
         .iconPic = gItemIcon_Glimmoranite,
         .iconPalette = gItemIconPalette_Glimmoranite,
     },
+    
+    [ITEM_POKE_VIAL] =
+    {
+        .name = ITEM_NAME("Poke Vial"),
+        .price = 0,
+        .description = COMPOUND_STRING(
+            "This vial\n"
+            "completely heals\n"
+            "the party."),
+        .pocket = POCKET_KEY_ITEMS,
+        .fieldUseFunc = ItemUseOutOfBattle_PokeVial,
+        .iconPic = gItemIcon_PokeVial,
+        .iconPalette = gItemIconPalette_PokeVial,
+    },
 
 // Gems
     #if I_PRICE >= GEN_9
