@@ -549,11 +549,18 @@ static inline u16 LeftChildIndex(u16 index)
     return 2*index + 1;
 }
 
-static inline void SwapGenericAndGroup(struct SpeciesTable* table, u16 indexA, u16 indexB)
+static inline void SwapSpeciesAndGroup(struct SpeciesTable* table, u16 indexA, u16 indexB)
 {
     u16 temp;
     SWAP(table->groupData[indexA], table->groupData[indexB], temp);
     SWAP(table->groupIndexToSpecies[indexA], table->groupIndexToSpecies[indexB], temp);
+}
+
+static inline void SwapMoveAndGroup(struct MoveTable* table, u16 indexA, u16 indexB)
+{
+    u16 temp;
+    SWAP(table->groupData[indexA], table->groupData[indexB], temp);
+    SWAP(table->moveToGroupIndex[indexA], table->moveToGroupIndex[indexB], temp);
 }
 
 static void BuildRandomizerSpeciesTable(enum RandomizerSpeciesMode mode)
@@ -593,7 +600,7 @@ static void BuildRandomizerSpeciesTable(enum RandomizerSpeciesMode mode)
         else
         {
             end = end - 1;
-            SwapGenericAndGroup(speciesTable, end, 0);
+            SwapSpeciesAndGroup(speciesTable, end, 0);
         }
         root = start;
         while(LeftChildIndex(root) < end)
@@ -609,7 +616,7 @@ static void BuildRandomizerSpeciesTable(enum RandomizerSpeciesMode mode)
 
             if (speciesTable->groupData[root] < speciesTable->groupData[child])
             {
-                SwapGenericAndGroup(speciesTable, root, child);
+                SwapSpeciesAndGroup(speciesTable, root, child);
                 root = child;
             }
             else
@@ -751,7 +758,7 @@ static void BuildRandomizerMoveTable(enum RandomizerMoveMode mode)
         else
         {
             end = end - 1;
-            SwapGenericAndGroup(moveTable, end, 0);
+            SwapMoveAndGroup(moveTable, end, 0);
         }
         root = start;
         while(LeftChildIndex(root) < end)
@@ -767,7 +774,7 @@ static void BuildRandomizerMoveTable(enum RandomizerMoveMode mode)
 
             if (moveTable->groupData[root] < moveTable->groupData[child])
             {
-                SwapGenericAndGroup(moveTable, root, child);
+                SwapMoveAndGroup(moveTable, root, child);
                 root = child;
             }
             else
