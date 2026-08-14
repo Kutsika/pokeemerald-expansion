@@ -5923,13 +5923,18 @@ void ItemUseCB_CandyJar(u8 taskId, TaskFunc task)
     sInitialLevel = GetMonData(mon, MON_DATA_LEVEL);
     if (sInitialLevel < levelCap)
     {
+        u32 expAtLevelCap;
+        enum Species species = GetMonData(mon, MON_DATA_SPECIES);
+
         BufferMonStatsToTaskData(mon, arrayPtr);
+        expAtLevelCap = gExperienceTables[gSpeciesInfo[species].growthRate][levelCap];
+        SetMonData(mon, MON_DATA_EXP, &expAtLevelCap);
         SetMonData(mon, MON_DATA_LEVEL, &levelCap);
+        CalculateMonStats(mon);
         BufferMonStatsToTaskData(mon, &ptr->data[NUM_STATS]);
         sFinalLevel = levelCap;
         gPartyMenuUseExitCallback = TRUE;
         UpdateMonDisplayInfoAfterRareCandy(gPartyMenu.slotId, mon);
-        RemoveBagItem(gSpecialVar_ItemId, 1);
         GetMonNickname(mon, gStringVar1);
         PlayFanfareByFanfareNum(FANFARE_LEVEL_UP);
         ConvertIntToDecimalStringN(gStringVar2, sFinalLevel, STR_CONV_MODE_LEFT_ALIGN, 3);
