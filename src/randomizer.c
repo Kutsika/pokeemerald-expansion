@@ -10,7 +10,7 @@ u16 RandomizeMove(u16 species, u16 move, u16 level){
     return move;
 }
 
-u16 RandomizeAbility(u16 species, u16 ability){
+u16 RandomizeAbility(u16 species, u8 abilityNum, u16 ability){
     return ability;
 }
 
@@ -560,7 +560,7 @@ static inline void SwapMoveAndGroup(struct MoveTable* table, u16 indexA, u16 ind
 {
     u16 temp;
     SWAP(table->groupData[indexA], table->groupData[indexB], temp);
-    SWAP(table->moveToGroupIndex[indexA], table->moveToGroupIndex[indexB], temp);
+    SWAP(table->groupIndexToMove[indexA], table->groupIndexToMove[indexB], temp);
 }
 
 static void BuildRandomizerSpeciesTable(enum RandomizerSpeciesMode mode)
@@ -1004,13 +1004,13 @@ u16 RandomizeMove(u16 species, u16 move, u16 level) {
     // We need to create a very stable seed that will always
     // return the same thing for the same pokemon at the same level.
     struct Sfc32State state = RandomizerRandSeed(RANDOMIZER_REASON_LEARNSET, species, ((u32) move << 16) | (u32) level);
-    u16 randomizedMove = RandomizeMoveTableLookup(&state, MOVE_RANDOM_BST, move);
+    u16 randomizedMove = RandomizeMoveTableLookup(&state, RANDOMIZER_MOVE_MODE, move);
 
     u8 i = 0;
     while (!isMoveAllowed(randomizedMove))
     {
         state = RandomizerRandSeed(RANDOMIZER_REASON_LEARNSET, ((u32) ++i << 24) | (u32) species, ((u32) move << 16) | (u32) level);
-        randomizedMove = RandomizeMoveTableLookup(&state, MOVE_RANDOM_BST, move);
+        randomizedMove = RandomizeMoveTableLookup(&state, RANDOMIZER_MOVE_MODE, move);
     }
     return randomizedMove;
 }
@@ -1024,12 +1024,16 @@ bool8 isAbilityAllowed(u16 ability) {
     return TRUE;
 }
 
-u16 RandomizeAbility(u16 species, u16 ability){
+u16 RandomizeAbility(u16 species, u8 abilityNum, u16 ability){
     #if RANDOMIZE_ABILITIES != TRUE
         return ability;
     #endif
-    // We need to create a very stable seed that will always
-    // return the same thing for the same pokemon
+    // Use the evolutionary line's base species and ability slot as the stable key.
+    #if RANDOMIZER_ABILITIES_PERSIST_EVOLUTION == TRUE
+        while (GetSpeciesPreEvolution(species) != SPECIES_NONE)
+            species = GetSpeciesPreEvolution(species);
+        ability = abilityNum;
+    #endif
     struct Sfc32State state = RandomizerRandSeed(RANDOMIZER_REASON_ABILITY, species, ability);
     u16 randomizedAbility = (u16) RandomizerNextRange(&state, ABILITIES_COUNT);
     u8 i = 0;

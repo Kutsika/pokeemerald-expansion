@@ -3146,7 +3146,7 @@ enum Ability GetAbilityBySpecies(enum Species species, u8 abilityNum)
         gLastUsedAbility = GetSpeciesAbility(species, i);
     }
 
-    return RandomizeAbility(species, gLastUsedAbility);
+    return RandomizeAbility(species, abilityNum, gLastUsedAbility);
 }
 
 enum Ability GetMonAbility(struct Pokemon *mon)
